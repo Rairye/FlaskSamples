@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CHAT BOT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='styles.css') }}"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{
+  url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+</head>
+<body>
+
+<script language="Javascript">
+   
+   chatHistory = "";
+  
+   function getResponse(){
+			userInput = document.getElementById("input").value;
+			document.getElementById("input").value = "";
+			chatHistory = chatHistory + "- User: " + userInput + "</br>";
+			document.getElementById("chattext").innerHTML = chatHistory;
+			scrollToBottom();
+			$.ajax({
+			type: 'GET',
+			url: '/chat',
+			data: {
+			'input_str' : userInput
+			},
+			success: function(data){
+			response = data.chat_response;
+			chatHistory = chatHistory + "<span style = \"font-style: italic\"> - Bot: " + response + "</span></br>";
+			document.getElementById("chattext").innerHTML = chatHistory;
+			scrollToBottom();
+		}			
+   }); 
+   } 
+   
+   function scrollToBottom(){
+   var div = document.getElementById("chatwindow");
+   div.scrollTop = div.scrollHeight - div.clientHeight;
+}
+   
+</script>
+
+<div align="center" id = "wrapper">
+<div class = "column">
+<div class = "col-xs-12">
+<div id = "chatwindow">
+<p id = "textbody">
+<text id = "chattext">
+
+</text>
+</p>
+</div>
+
+<div id = "inputfield">
+<form action = "javascript:getResponse()" method = "post" id = "inputform">
+<div class="input-group mb-3">
+
+  <input type="text" name = "input" id = "input" class="form-control" placeholder="" aria-describedby="basic-addon2" required autofocus autocomplete="off">
+  <div class="input-group-append">
+  <button class="btn btn-outline-secondary" type="button">SEND</button>
+  </div>
+
+</form>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

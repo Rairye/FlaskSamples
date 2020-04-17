@@ -1,0 +1,39 @@
+body {
+	max-width:100%;
+}
+
+div#wrapper{
+   background-color: #DCDCDC;
+   height: 100vh;
+   width: 100vw;
+   padding-top: 20px
+}
+
+div#chatwindow{
+	height: 80vh;
+	width: 80vw;
+	overflow: auto;
+	border: 1px;
+	background-color: white;
+	border-color: black;
+	border-style: solid;
+}
+
+p#textbody {
+  text-align: left;
+  margin-left: 10px;
+  margin-right: 30px;
+  margin-top: 10px;
+  line-height: 30px;
+  word-wrap: normal;
+}
+
+text#chattext {
+   line-height: 30px;
+   font-size: 25px;
+}
+
+div#inputfield {
+   width: 80vw;
+   margin-top: 2px;
+}
