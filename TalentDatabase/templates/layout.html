@@ -1,0 +1,47 @@
+<!doctype html>
+
+<html>
+<head>
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+<meta name="viewport" content="width=device-width", initial-scale=1.0">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
+<script>window.jQuery || document.write('<script src="{{
+url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
+
+<title>{% block title %}{% endblock %}</title>
+
+{% endblock %}
+</head>
+
+{% block body%}
+
+<body>
+<div id="wrapper">
+{% block navigation%}
+
+<div id = "navigation">
+
+<a href = "/add">
+<text id = "navigation_text">
+Add talent
+</text>
+</a>
+<a href = "/search">
+<text id = "navigation_text">
+Search talent
+</text>
+</a>
+</div>
+
+{% endblock%}
+
+{% block content%}
+
+{% endblock %}
+</div>
+</body>
+
+{% endblock %}
+</html>

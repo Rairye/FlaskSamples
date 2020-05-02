@@ -1,0 +1,101 @@
+{% extends "layout.html"%}
+
+{% block title %} Edit Talent {% endblock %}
+
+{% block head %}
+{{super()}}
+<script language="Javascript">
+
+var id = null;
+
+function getValues(){
+    values = {{talent | tojson}}
+ 
+    if ((values[0] == undefined || values[1] == undefined) || (values[2] == undefined || values[3] == undefined)) {
+        alert("The record in question no longer exists. Please refresh the search results and try again.");
+        window.history.back();
+    } else {
+        id = values[0]    
+        document.getElementById("name").value = values[1];
+        document.getElementById("skills").value = values[2];
+        document.getElementById("notes").value = values[3];
+    }
+}
+
+function updateTalent() {
+    name = document.getElementById("name").value;
+    skills = document.getElementById("skills").value;
+    notes = document.getElementById("notes").value;
+    
+    if (name == "" && (skills == "" && notes  == "")) {
+        alert("Unable to update an empty entry. If you would like to delete it, please click 'Delete'.");
+        return;
+    }
+    
+    try {
+    $.ajax({
+    type: "POST",
+    url: "/update_talent",
+    data: {
+    "id" : id,
+    "name" : name,
+    "skills" : skills,
+    "notes" : notes
+    }, success: function(data) {
+      if (data.response = "Success") {
+        alert("Talent was updated successfully.");
+      } else {
+        alert("Invalid request. Please try again.");
+      }
+    }
+});
+
+}  catch (error) {
+        alert("There was an error connecting to the database. Check your Internet connection and try again.");
+    }
+}
+
+function deleteTalent() {
+    
+    try {
+    $.ajax({
+    type: "POST",
+    url: "/delete_talent",
+    data: {
+    "id" : id
+      }, success: function(data) {
+      if (data.response = "Success") {
+        alert("Talent was deleted successfully.");
+        window.history.back()
+      } else {
+        alert(data.response);
+      }
+    }
+});
+
+}  catch (error) {
+        alert("There was an error connecting to the database. Check your Internet connection and try again.");
+    }
+}
+
+</script>
+
+{% endblock %}
+
+{% block body%}
+<body onload="getValues()">
+{% block content%}
+
+<div id="form_div">
+<label for="name">Name:</label><br><br>
+<input type = "text" id="name" max_length = "50" name = "text_input" style="width: 20vw; font-size: 15px; font-family: Arial; resize:none"><br><br>
+<label for="skills">Skills:</label><br><br>
+<textarea id="skills" rows ="4" max_length = "1000" style="width: 60vw; font-size: 15px; font-family: Arial; resize:none"></textarea><br><br>
+<label for="notes">Notes:</label><br><br>
+<textarea id="notes" rows ="4" max_length = "1000" style="width: 60vw; font-size: 15px; font-family: Arial; resize:none"></textarea><br><br>
+<div style="flex_direction : row; display : flex"><div><button type="button" onClick = "updateTalent()">Update</button></div><div style = "padding-left: 30px"> <button type="button" onClick = "deleteTalent()">Delete</button></div></div>
+</div>
+
+{% endblock %}
+</body>
+{% endblock %}

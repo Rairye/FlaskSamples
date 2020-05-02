@@ -1,0 +1,71 @@
+{% extends "layout.html"%}
+
+{% block title %} Add Talent {% endblock %}
+
+{% block head %}
+{{super()}}
+<script language="Javascript">
+
+function addTalent() {
+    name = document.getElementById("name").value;
+    if (name == "") {
+        alert("Please specify a name.");
+        return;
+    } else {
+    
+    skills = document.getElementById("skills").value;
+    notes = document.getElementById("notes").value;
+    
+    try {
+    $.ajax({
+    type: "POST",
+    url: "/add_talent",
+    data: {
+    "name" : name,
+    "skills" : skills,
+    "notes" : notes
+    }, success: function(data) {
+       alert(data.response == "Success" ? "Successfully added new talent: " + name : "Invalid request. Please try again.");
+       if (data.response == "Success") {
+	   reset(); }
+    }
+});
+
+}  catch (error) {
+        alert("There was an error connecting to the database. Check your Internet connection and try again.");
+    }
+  }
+}
+
+function reset(){
+    document.getElementById("name").value = "";
+    document.getElementById("skills").value = "";
+    document.getElementById("notes").value = "";
+    document.getElementById("name").focus();
+}
+
+</script>
+
+{% endblock %}
+
+{% block body%}
+{% block navigation %}
+{{super()}}
+{% endblock %}
+
+{% block content%}
+
+
+<div id="form_div">
+
+<label for="name">Name:</label><br><br>
+<input type = "text" id="name" max_length = 50 name = "text_input" style="width: 20vw; font-size: 15px; font-family: Arial; resize:none"><br><br>
+<label for="skills">Skills:</label><br><br>
+<textarea id="skills" rows ="4" max_length = 1000 style="width: 60vw; font-size: 15px; font-family: Arial; resize:none"></textarea><br><br>
+<label for="notes">Notes:</label><br><br>
+<textarea id="notes" rows ="4" max_length = 1000 style="width: 60vw; font-size: 15px; font-family: Arial; resize:none"></textarea><br><br>
+<button type="button" onClick = "addTalent()">Add</button>
+</div>
+
+{% endblock %}
+{% endblock %}
