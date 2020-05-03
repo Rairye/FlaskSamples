@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 strip_punct(word):
     word = word.translate(str.maketrans('', '', "\"\';"))
     return word.replace("--", "")
+
 class Talent(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(500))
