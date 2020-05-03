@@ -12,6 +12,9 @@ engine.connect()
 
 db = SQLAlchemy(app)
 
+strip_punct(word):
+    return word.translate(str.maketrans('', '', "\"\';"))
+
 class Talent(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(500))
@@ -26,9 +29,9 @@ class Talent(db.Model):
 @app.route("/add_talent", methods=["POST"])
 def add_talent():
     single_dict = request.values.to_dict(flat=True)
-    name = single_dict["name"]
-    skills = single_dict["skills"]
-    notes = single_dict["notes"]
+    name = strip_punct(single_dict["name"])
+    skills = strip_punct(single_dict["skills"])
+    notes = strip_punct(single_dict["notes"])
 
     new_talent = None
     response = "Success"
@@ -44,9 +47,9 @@ def add_talent():
 @app.route("/search_talent", methods=["POST"])
 def search_talent():
 
-    name = request.form.get("name")
-    skills = request.form.get("skills")
-    notes = request.form.get("notes")
+    name = strip_punct(request.form.get("name"))
+    skills = strip_punct(request.form.get("skills"))
+    notes = strip_punct(request.form.get("notes"))
 
     search_statement = "SELECT * FROM talent" if name == "" and (skills == "" and notes == "") else "SELECT * FROM talent WHERE"
 
@@ -102,9 +105,9 @@ def search_talent():
 def update_talent():
     single_dict = request.values.to_dict(flat=True)
     id_number = single_dict["id"]
-    name = single_dict["name"]
-    skills = single_dict["skills"]
-    notes = single_dict["notes"]
+    name = strip_punct(single_dict["name"])
+    skills = strip_punct(single_dict["skills"])
+    notes = strip_punct(single_dict["notes"])
     response = "Success"
     
     try:
