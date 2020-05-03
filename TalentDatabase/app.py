@@ -1,4 +1,4 @@
-from flask import  Flask, render_template, request, jsonify, flash, session
+from flask import Flask, render_template, request, jsonify, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
@@ -147,7 +147,7 @@ def update(id_num):
     
     talent = []
     try:
-        results = (engine.execute("SELECT id, name, skills, notes FROM talent WHERE id = {};".format(id_num)))
+        results = (engine.execute("SELECT * FROM talent WHERE id = {};".format(id_num)))
         for result in results.fetchall():
             talent.append(result[0])
             talent.append(result[1] if result[1] != None  else "")
