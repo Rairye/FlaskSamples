@@ -18,7 +18,7 @@ strip_punct(word):
 
 class Talent(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
-    name = db.Column("name", db.String(500))
+    name = db.Column("name", db.String(50))
     skills = db.Column("skills", db.String(1000))
     notes = db.Column("notes", db.String(1000))
 
