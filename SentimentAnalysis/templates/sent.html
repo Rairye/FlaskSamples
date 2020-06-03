@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sentiment Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='styles.css') }}"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{
+  url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
+<script language="Javascript">
+   
+   function getSentiment(){
+			userInput = document.getElementById("input").value;
+			if (userInput == "") {
+				return;
+			}
+			document.getElementById("sentimenttext").innerHTML = "";
+			$.ajax({
+			type: 'POST',
+			url: '/get_sentiment',
+			data: {
+			'input_str' : userInput
+			},
+			success: function(data){
+			document.getElementById("sentimenttext").innerHTML = data.sentiment;
+			document.getElementById("input").value = "";
+		  }, error: function(data) {
+			alert("There was a server-side error. Please check your Internet connection and try again.");
+		}
+   }); 
+   }
+</script>
+</head>
+
+<body>
+<div align="center" id = "wrapper">
+<div id = "inputfield">
+<form action = "javascript:getSentiment()" method = "post" id = "inputform">
+<div class="input-group mb-3">
+  <input type="text" name = "input" id = "input" class="form-control" placeholder="" aria-describedby="basic-addon2" maxlength = "600" required autofocus autocomplete="off">
+  <div class="input-group-append">
+  <button class="btn btn-outline-secondary" type="button" onClick="getSentiment()">SUBMIT</button>
+  </div>
+</form>
+</div>
+<div id = "sentimentdiv">
+<text id = "sentimenttext" name = "sentimenttext"></text>
+</div>
+</div>
+</div>
+<footer id = "footer">
+<div id = "creditsdiv">
+<p id = "credittext">Sentiment analysis using IMDb dataset. The data source can be found at: <a href ="https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews">https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews</a>. <b>Note: </b>The training accuracy of this model was approx. 94.9%. <b>Credits:</b> Maas, Andrew L.; Daly, Raymond E.; Pham, Peter T.; Huang, Dan; Ng, Andrew Y.; Potts, Christopher.</b> 
+ <a href= "https://www.aclweb.org/anthology/P11-1015/"><i>Learning Word Vectors for Sentiment Analysis</i></a> on pages 142 to 150 in the book "Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies" published June 2011 by the Association for Computational Linguistics.</p>
+</div>
+</footer>
+</body>
+</html>
